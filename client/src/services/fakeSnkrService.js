@@ -47,21 +47,21 @@ const snkrs = [
   {
     _id: "5b21ca3eeb7f6fbccd47181e",
     name: "Gone Girl",
-    brand: { _id: "5b21ca3eeb7f6fbccd471820", name: "Thriller" },
+    brand: { _id: "5b21ca3eeb7f6fbccd471820", name: "Adidas" },
     pairsInStock: 7,
     hotRate: 4.5
   },
   {
     _id: "5b21ca3eeb7f6fbccd47181f",
     name: "The Sixth Sense",
-    brand: { _id: "5b21ca3eeb7f6fbccd471820", name: "Thriller" },
+    brand: { _id: "5b21ca3eeb7f6fbccd471820", name: "Jordan" },
     pairsInStock: 4,
     hotRate: 3.5
   },
   {
     _id: "5b21ca3eeb7f6fbccd471821",
     name: "The Avengers",
-    brand: { _id: "5b21ca3eeb7f6fbccd471818", name: "Action" },
+    brand: { _id: "5b21ca3eeb7f6fbccd471818", name: "Nike" },
     pairsInStock: 7,
     hotRate: 3.5
   }
@@ -72,11 +72,11 @@ export function getSnkrs() {
 }
 
 export function getSnkr(id) {
-  return snkrs.find(m => m._id === id);
+  return snkrs.find(s => s._id === id);
 }
 
 export function saveSnkr(snkr) {
-  let snkrInDb = snkrs.find(m => m._id === snkr._id) || {};
+  let snkrInDb = snkrs.find(s => s._id === snkr._id) || {};
   snkrInDb.name = snkr.name;
   snkrInDb.brand = brandsAPI.brands.find(g => g._id === snkr.brandId);
   snkrInDb.pairsInStock = snkr.pairsInStock;

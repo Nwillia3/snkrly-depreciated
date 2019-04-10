@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { getSnkrs } from "../services/fakeSnkrService";
 import Pagination from "../commons/pagination";
+import { paginate } from "../utils/paginate";
 
 class Snkrs extends Component {
   state = {
     snkrs: getSnkrs(),
-    pageSize: 4
+    pageSize: 4,
+    currentPage: 1
   };
 
   handleDelete = snkr => {
@@ -14,15 +16,18 @@ class Snkrs extends Component {
   };
 
   handlePageChange = page => {
-    console.log(page);
+    this.setState({ currentPage: page });
   };
 
   render() {
+    const { currentPage, pageSize, snkrs: allSnkrs } = this.state;
     const { length: count } = this.state.snkrs;
     if (count === 0)
       return (
         <h3> There are no snkrs in the database, please add to collection!</h3>
       );
+
+    const snkrs = paginate(allSnkrs, currentPage, pageSize);
 
     return (
       <React.Fragment>
@@ -38,7 +43,7 @@ class Snkrs extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.snkrs.map(snkr => (
+            {snkrs.map(snkr => (
               <tr key={snkr._id}>
                 <td>{snkr.brand.name}</td>
                 <td>{snkr.name}</td>
@@ -58,8 +63,9 @@ class Snkrs extends Component {
         </table>
         <Pagination
           itemsCount={count}
-          pageSize={this.state.pageSize}
-          onPageChange={() => this.handlePageChange()}
+          pageSize={pageSize}
+          onPageChange={this.handlePageChange}
+          currentPage={currentPage}
         />
       </React.Fragment>
     );

@@ -1,18 +1,25 @@
 import React from "react";
 import _ from "lodash";
 
-const Pagination = ({ itemsCount, pageSize }) => {
+const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
   const pagesCount = itemsCount / pageSize;
-  const pages = _.range(1, pagesCount + 1); // gives a range for the pagination, +1 used as pagesCount itself isnt counted
+  console.log(currentPage);
 
-  if (pagesCount < 2) return null; // edge case if there is only one page of snkrs
+  if (pagesCount <= 1) return null; // edge case if there is only one page of snkrs
+
+  const pages = _.range(1, pagesCount + 1); // gives a range for the pagination, +1 used as pagesCount itself isnt counted
 
   return (
     <nav>
       <ul className="pagination">
         {pages.map(page => (
-          <li key={page} className="page-item">
-            <a className="page-link"> {page} </a>
+          <li
+            key={page}
+            className={page === currentPage ? "page-item active" : "page-item"}
+          >
+            <a onClick={() => onPageChange(page)} className="page-link">
+              {page}
+            </a>
           </li>
         ))}
       </ul>

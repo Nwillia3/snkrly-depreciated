@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/nwillia3/snkrly#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "nodemon": "^1.18.11"

@@ -39,7 +39,7 @@ class Snkrs extends Component {
     this.setState({ sortColumn });
   };
 
-  render() {
+  getPageDate = () => {
     const {
       currentPage,
       pageSize,
@@ -47,11 +47,6 @@ class Snkrs extends Component {
       selectedBrand,
       sortColumn
     } = this.state;
-    const { length: count } = this.state.snkrs;
-    if (count === 0)
-      return (
-        <h3> There are no snkrs in the database, please add to collection!</h3>
-      );
 
     const filtered =
       selectedBrand && selectedBrand._id
@@ -61,6 +56,20 @@ class Snkrs extends Component {
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
     const snkrs = paginate(sorted, currentPage, pageSize);
+
+    return { totalCount: filtered.length, data: snkrs };
+  };
+
+  render() {
+    const { currentPage, pageSize, sortColumn } = this.state;
+    const { length: count } = this.state.snkrs;
+
+    if (count === 0)
+      return (
+        <h3> There are no snkrs in the database, please add to collection!</h3>
+      );
+
+    const { totalCount, data: snkrs } = this.getPageDate();
 
     return (
       <div className="row">
@@ -72,7 +81,7 @@ class Snkrs extends Component {
           />
         </div>
         <div className="col">
-          <h3> Showing {filtered.length} snkrs in the database</h3>
+          <h3> Showing {totalCount} snkrs in the database</h3>
           <SnkrsTable
             snkrs={snkrs}
             sortColumn={sortColumn}
@@ -80,7 +89,7 @@ class Snkrs extends Component {
             onSort={this.handleSort}
           />
           <Pagination
-            itemsCount={filtered.length}
+            itemsCount={totalCount}
             pageSize={pageSize}
             onPageChange={this.handlePageChange}
             currentPage={currentPage}

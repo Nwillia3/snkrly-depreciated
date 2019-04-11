@@ -5,7 +5,7 @@ import Snkrs from "./components/snkrs";
 class App extends Component {
   render() {
     return (
-      <main className="App">
+      <main className="container">
         <Snkrs />
       </main>
     );

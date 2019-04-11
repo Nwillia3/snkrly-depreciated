@@ -2,13 +2,25 @@ import React, { Component } from "react";
 import { getSnkrs } from "../services/fakeSnkrService";
 import Pagination from "../commons/pagination";
 import { paginate } from "../utils/paginate";
+import { getBrands } from "../services/fakeBrandService";
+import ListGroup from "../components/listGroup";
+import SnkrsTable from "./snkrTable";
+import _ from "lodash";
 
 class Snkrs extends Component {
   state = {
-    snkrs: getSnkrs(),
+    snkrs: [],
     pageSize: 4,
-    currentPage: 1
+    currentPage: 1,
+    brands: [],
+    selectedBrand: "",
+    sortColumn: { path: "brand", order: "asc" }
   };
+
+  componentDidMount() {
+    const brands = [{ _id: "", name: "All Brands" }, ...getBrands()];
+    this.setState({ snkrs: getSnkrs(), brands: brands });
+  }
 
   handleDelete = snkr => {
     const snkrs = this.state.snkrs.filter(s => s._id !== snkr._id);
@@ -19,55 +31,62 @@ class Snkrs extends Component {
     this.setState({ currentPage: page });
   };
 
+  handleBrandSelect = brand => {
+    this.setState({ selectedBrand: brand, currentPage: 1 });
+  };
+
+  handleSort = sortColumn => {
+    this.setState({ sortColumn });
+  };
+
   render() {
-    const { currentPage, pageSize, snkrs: allSnkrs } = this.state;
+    const {
+      currentPage,
+      pageSize,
+      snkrs: allSnkrs,
+      selectedBrand,
+      sortColumn
+    } = this.state;
     const { length: count } = this.state.snkrs;
     if (count === 0)
       return (
         <h3> There are no snkrs in the database, please add to collection!</h3>
       );
 
-    const snkrs = paginate(allSnkrs, currentPage, pageSize);
+    const filtered =
+      selectedBrand && selectedBrand._id
+        ? allSnkrs.filter(s => s.brand._id === selectedBrand._id)
+        : allSnkrs;
+
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const snkrs = paginate(sorted, currentPage, pageSize);
 
     return (
-      <React.Fragment>
-        <h3> Showing {count} snkrs in the database</h3>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Brand</th>
-              <th>Name</th>
-              <th>Stock</th>
-              <th> Hotness</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {snkrs.map(snkr => (
-              <tr key={snkr._id}>
-                <td>{snkr.brand.name}</td>
-                <td>{snkr.name}</td>
-                <td>{snkr.pairsInStock}</td>
-                <td>{snkr.hotRate}</td>
-                <td>
-                  <button
-                    onClick={() => this.handleDelete(snkr)}
-                    className="btn btn-danger btn-sm"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          itemsCount={count}
-          pageSize={pageSize}
-          onPageChange={this.handlePageChange}
-          currentPage={currentPage}
-        />
-      </React.Fragment>
+      <div className="row">
+        <div className="col-2">
+          <ListGroup
+            items={this.state.brands}
+            selectedItem={this.state.selectedBrand}
+            onItemSelect={this.handleBrandSelect}
+          />
+        </div>
+        <div className="col">
+          <h3> Showing {filtered.length} snkrs in the database</h3>
+          <SnkrsTable
+            snkrs={snkrs}
+            sortColumn={sortColumn}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+          />
+          <Pagination
+            itemsCount={filtered.length}
+            pageSize={pageSize}
+            onPageChange={this.handlePageChange}
+            currentPage={currentPage}
+          />
+        </div>
+      </div>
     );
   }
 }

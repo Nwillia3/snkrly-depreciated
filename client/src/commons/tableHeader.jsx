@@ -1,0 +1,38 @@
+import React, { Component } from "react";
+
+//columns :Array
+// sortColumn : object
+//onSort: function
+class TableHeader extends Component {
+  raiseSort = path => {
+    const sortColumn = { ...this.props.sortColumn }; // cloning the sortcolumn
+    if (sortColumn.path === path)
+      // change sort order if order is the same
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    else {
+      // if the path is different
+      sortColumn.path = path;
+      sortColumn.order = "asc"; // sorting should be ascending whenever sorting a new column
+    }
+    this.props.onSort(sortColumn);
+  };
+
+  render() {
+    return (
+      <thead>
+        <tr>
+          {this.props.columns.map(column => (
+            <th
+              key={column.path || column.key} // use the column or the key
+              onClick={() => this.raiseSort(column.path)}
+            >
+              {column.label}
+            </th>
+          ))}
+        </tr>
+      </thead>
+    );
+  }
+}
+
+export default TableHeader;

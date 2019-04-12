@@ -5,6 +5,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import NotFound from "./components/notFound";
 import NavBar from "./commons/navBar";
 import SnkrForm from "./components/snkrForm";
+import LoginForm from "./components/loginForm";
 
 class App extends Component {
   render() {
@@ -17,6 +18,8 @@ class App extends Component {
             <Route path="/snkrs/:id/:name" component={SnkrForm} />
 
             <Route path="/snkrs" component={Snkrs} />
+            <Route path="/login" component={LoginForm} />
+
             <Route path="/snkrForm" component={SnkrForm} />
             <Route path="/not-found" component={NotFound} />
             <Redirect from="/" to="/snkrs" />

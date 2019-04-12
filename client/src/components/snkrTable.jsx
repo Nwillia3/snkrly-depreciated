@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 import Table from "../commons/table";
+import { Link } from "react-router-dom";
 
 class SnkrsTable extends Component {
   columns = [
-    { path: "brand.name", label: "Brand" },
+    {
+      path: "brand.name",
+      label: "Brand",
+      content: snkr => (
+        <Link to={`/snkrs/${snkr._id}/${snkr.name}`}> {snkr.brand.name}</Link>
+      )
+    },
     { path: "name", label: "Name" },
     { path: "pairsInStock", label: "Stock" },
     { path: "hotRate", label: "Hotness" },

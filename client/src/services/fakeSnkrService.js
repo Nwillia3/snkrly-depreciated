@@ -3,7 +3,7 @@ import * as brandsAPI from "./fakeBrandService";
 const snkrs = [
   {
     _id: "5b21ca3eeb7f6fbccd471815",
-    name: "Adidas",
+    name: "Nike Air Max 97",
     brand: { _id: "5b21ca3eeb7f6fbccd471818", name: "Nike" },
     pairsInStock: 6,
     hotRate: 2.5,
@@ -11,7 +11,7 @@ const snkrs = [
   },
   {
     _id: "5b21ca3eeb7f6fbccd471816",
-    name: "Die Hard",
+    name: "Nike FlyKnit 2018",
     brand: { _id: "5b21ca3eeb7f6fbccd471818", name: "Nike" },
     pairsInStock: 5,
     hotRate: 2.5
@@ -83,7 +83,7 @@ export function saveSnkr(snkr) {
   snkrInDb.hotRate = snkr.hotRate;
 
   if (!snkrInDb._id) {
-    snkrInDb._id = Date.now();
+    snkrInDb._id = Date.now().toString();
     snkrs.push(snkrInDb);
   }
 

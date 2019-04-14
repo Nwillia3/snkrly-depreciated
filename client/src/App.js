@@ -6,6 +6,7 @@ import NotFound from "./components/notFound";
 import NavBar from "./commons/navBar";
 import SnkrForm from "./components/snkrForm";
 import LoginForm from "./components/loginForm";
+import RegisterForm from "./components/register";
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
 
             <Route path="/snkrs" component={Snkrs} />
             <Route path="/login" component={LoginForm} />
+            <Route path="/signup" component={RegisterForm} />
 
             <Route path="/snkrForm" component={SnkrForm} />
             <Route path="/not-found" component={NotFound} />

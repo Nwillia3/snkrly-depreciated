@@ -1,0 +1,6 @@
+{
+  "name": "Snkrly - Production",
+  "mail": {
+    "host": "prod-mail-server"
+  }
+}

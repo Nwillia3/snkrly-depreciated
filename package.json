@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/nwillia3/snkrly#readme",
   "dependencies": {
-    "config": "^3.1.0",
+    "config": "^3.3.8",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
     "express": "^4.16.4",
